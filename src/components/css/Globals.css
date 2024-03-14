@@ -1,0 +1,43 @@
+html {
+    background-color: #e5e5e5;
+}
+
+.headerContainer {
+    margin-bottom: 5rem;
+}
+
+.sliderContainer {
+    margin-bottom: 2.2rem;
+}
+/* Background Header "Dashboard" */
+.bg-eggs {
+    background-color: #fff;
+}
+
+.bg-eggs-secondary {
+    background-color: #e5e5e5;
+}
+
+.text-light-primary {
+    color: #fff;
+}
+
+/* #0d6efd */
+/* #ccc */
+
+
+.text-light-primary:hover {
+    color: #edeaea;
+}
+
+.text-light-secondary {
+    color: #dddcdc;
+}
+
+.text-light-secondary:hover {
+    color: #cfcbcb;
+}
+
+.text-light-secondary:active {
+    color: #cfcbcb;
+}

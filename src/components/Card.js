@@ -1,6 +1,6 @@
 import React from "react";
 import "./css/Cards.css";
-import { ButtonDetails } from "./Button";
+import { Card } from 'react-bootstrap';
 
 export const VerticalCards = ({ image, title, description, foot }) => {
     return (
@@ -104,5 +104,21 @@ export const Cardv3 = ({ image, title, description, price, modal }) => {
         </div>
     )
 }
+
+
+
+export const CreatorCard = ({ image, name, role }) => {
+    return (
+        <Card style={{ width: '18rem' }}>
+            <Card.Img variant="top" src={image} />
+            <Card.Body>
+                <Card.Title>{name}</Card.Title>
+                <Card.Text>
+                    {role}
+                </Card.Text>
+            </Card.Body>
+        </Card>
+    );
+};
 
 

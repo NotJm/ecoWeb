@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SiEgghead } from 'react-icons/si';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -8,17 +8,25 @@ import withReactContent from 'sweetalert2-react-content';
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const isAddUser = localStorage.getItem('addUser') === 'true';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordFocused, setIsPasswordFocused] = useState(false)
+  const [permission, setPermission] = useState(false);
+
+  useEffect(() => {
+    if (isAddUser) {
+      localStorage.removeItem('addUser');
+    }
+  }, []);
 
   const swal = withReactContent(Swal);
 
   const validatePassword = (password) => {
     // Use regex to enforce password criteria
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&]{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.])[A-Za-z\d@$!%*?&#.]{8,}$/;
     return regex.test(password);
   };
 
@@ -78,37 +86,69 @@ export const SignUp = () => {
         codigoPostal: "",
         telefono: ""
       },
-      permisos: false
+      permisos: permission
     };
 
-    try {
-      const response = await axios.post('https://ecoserver-zopz.onrender.com/user', data);
+    const options = [
+      "¿Cuál es el nombre de tu primer mascota?",
+      "¿Cuál es tu comida favorita?",
+      "¿En qué ciudad nació tu madre?",
+      "¿Cuál es tu película favorita?",
+      "¿Cuál es tu canción favorita?"
+    ];
 
-      if (response.status === 200) {
-        swal.fire({
-          title: `Registro exitoso`,
-          text: `¡Bienvenido a Eco-Nido, ${username}!`,
-          icon: "success",
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: () => {
-            swal.showLoading();
-          },
-          didClose: () => {
-            if (!swal.isLoading()) {
-              navigate("/iniciar-sesion");
-            }
+    try {
+      Swal.fire({
+        title: 'Pregunta secreta pendiente',
+        text: 'Antes de concluir registro es necesario tener una pregunta secreta',
+        icon: 'info',
+        html:
+          `<select id="question" class="form-select mb-3">
+                <option value="" selected disabled>Selecciona una pregunta secreta</option>
+                ${options.map((option) => `<option value="${option}">${option}</option>`)}
+            </select>
+            <input id="answer" type="text" class="form-control" placeholder="Respuesta a la pregunta secreta">`,
+        showCancelButton: false,
+        confirmButtonText: 'Guardar',
+        allowOutsideClick: false, // Evita que el modal se cierre haciendo clic fuera de él
+        preConfirm: () => {
+          const question = document.getElementById('question').value;
+          const answer = document.getElementById('answer').value;
+          if (!question || !answer) {
+            Swal.showValidationMessage('Por favor selecciona una pregunta y proporciona una respuesta.');
+          } else {
+            data.pregunta_secreta = question;
+            data.respuesta_secreta = md5(answer);
           }
-        });
-      } else {
-        swal.fire({
-          title: "Error en el registro",
-          text: "Usuario ya existe o información incorrecta.",
-          icon: "error",
-        });
-        console.error('Error en la solicitud:', response.statusText);
-        console.log('Contenido de la respuesta:', response.data);
-      }
+        }
+      }).then(async () => {
+        const response = await axios.post('https://ecoserver-zopz.onrender.com/user', data);
+
+        if (response.status === 200) {
+          swal.fire({
+            title: !isAddUser ? (`Registro exitoso`) : (`Usuario añadido con exito`),
+            text: `¡Bienvenido a Eco-Nido, ${username}!`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+              swal.showLoading();
+            },
+            didClose: () => {
+              if (!swal.isLoading()) {
+                localStorage.removeItem('addUser');
+                !isAddUser ? (navigate("/iniciar-sesion")) : (navigate("/usuarios"))
+              }
+            }
+          });
+        } else {
+          swal.fire({
+            title: "Error en el registro",
+            text: "Usuario ya existe o información incorrecta.",
+            icon: "error",
+          });
+        }
+      });
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
 
@@ -125,7 +165,7 @@ export const SignUp = () => {
       <div className="row justify-content-center">
         <div className="col-lg-4 col-md-6 col-12">
           <div className="text-center mb-4">
-            <h2 className="fw-bold text-dark">¡Bienvenido de nuevo!</h2>
+            <h2 className="fw-bold text-dark">{!isAddUser ? ("¡Bienvenido de nuevo!") : ("Añade Usuario")}</h2>
             <SiEgghead style={{ width: '128px', height: '128px', fill: '#000' }} />
           </div>
           <form onSubmit={handleSubmit}>
@@ -174,7 +214,7 @@ export const SignUp = () => {
                 onFocus={handlePasswordFocus}
                 onBlur={handlePasswordBlur}
               />
-              {isPasswordFocused && ( 
+              {isPasswordFocused && (
                 <p className="text-muted mt-2">
                   La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial. Además, debe tener al menos 8 caracteres.
                 </p>
@@ -195,16 +235,34 @@ export const SignUp = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
+            {isAddUser ? (
+              <div className="mb-3 form-check">
+                <input
+                  id="permissions"
+                  name="permissions"
+                  className="form-check-input"
+                  type="checkbox"
+                  checked={permission}
+                  onChange={(e) => setPermission(e.target.checked)}
+                />
+                <label htmlFor="permissions" className="form-check-label text-dark">
+                  ¿Administrador?
+                </label>
+              </div>
+            ) : null}
+
 
             <button type="submit" className="btn btn-primary mb-3 w-100">
-              Registrarse
+              {!isAddUser ? ("Registrate") : ("Añadir Usuario")}
             </button>
 
-            <div className="d-flex justify-content-center">
-              <Link to="/iniciar-sesion" className="text-decoration-underline text-dark">
-                ¿Ya tienes una cuenta? Inicia sesión
-              </Link>
-            </div>
+            {!isAddUser ? (
+              <div className="d-flex justify-content-center">
+                <Link to="/iniciar-sesion" className="text-decoration-underline text-dark">
+                  ¿Ya tienes una cuenta? Inicia sesión
+                </Link>
+              </div>
+            ) : null}
           </form>
         </div>
       </div>

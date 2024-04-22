@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Slider = ({ img1, img2, img3 }) => {
     return (
@@ -64,22 +65,24 @@ export const IntroSection = () => {
                     <div className="text-white">
                         <h1 className="mb-3">Empoderando</h1>
                         <h5 className="mb-4">¡Eco-Nido, donde el futuro se incuba con respeto al medio ambiente y amor por la naturaleza!</h5>
-                        <a
-                            data-mdb-ripple-init
-                            className="btn btn-danger btn-lg m-2"
-                            href="/acercaDe"
-                            role="button"
-                        >
-                            Conócenos
-                        </a>
-                        <a
-                            data-mdb-ripple-init
-                            className="btn btn-danger btn-lg m-2"
-                            href="/catalogo"
-                            role="button"
-                        >
-                            Incubadoras
-                        </a>
+                        <Link to="/acercaDe">
+                            <a
+                                data-mdb-ripple-init
+                                className="btn btn-danger btn-lg m-2"
+                                role="button"
+                            >
+                                Conócenos
+                            </a>
+                        </Link>
+                        <Link to="/catalogo">
+                            <a
+                                data-mdb-ripple-init
+                                className="btn btn-danger btn-lg m-2"
+                                role="button"
+                            >
+                                Incubadoras
+                            </a>
+                        </Link>
                     </div>
                 </div>
             </div>

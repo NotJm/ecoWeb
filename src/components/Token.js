@@ -21,8 +21,13 @@ export const VerifyToken = () => {
                 text: 'Token verificado con éxito',
                 icon: 'success',
             });
-            localStorage.clear();
-            navigate("/updatePassword");
+            localStorage.removeItem('token');
+            if (localStorage.getItem('step2_q') === 'step2') {
+                navigate("/questionform");
+            } else {
+                navigate("/updatePassword");
+            }
+
         } else {
             setVerificationResult('Token no válido');
             swal.fire({
@@ -38,12 +43,12 @@ export const VerifyToken = () => {
             <div className="row">
                 <div className="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-12">
                     <div className="text-center mb-4">
-                        <h2 className="fw-bold text-light">Verificar Token</h2>
-                        <SiEgghead style={{ width: '128px', height: '128px', fill: '#fff' }} />
+                        <h2 className="fw-bold ">Verificar Token</h2>
+                        <SiEgghead style={{ width: '128px', height: '128px', fill: '#000' }} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="token" className="form-label text-light">
+                        <label htmlFor="token" className="form-label">
                             Ingrese el token:
                         </label>
                         <input
@@ -56,7 +61,7 @@ export const VerifyToken = () => {
                         />
                     </div>
 
-                    <button type="button" className="btn btn-primary mb-3 w-100" onClick={handleVerifyToken}>
+                    <button type="button" className="btn btn-danger mb-3 w-100" onClick={handleVerifyToken}>
                         Verificar Token
                     </button>
 
@@ -67,7 +72,7 @@ export const VerifyToken = () => {
                     )}
 
                     <div className="d-flex justify-content-center">
-                        <Link to="/" className="text-decoration-underline text-light-primary">
+                        <Link to="/" className="text-decoration-underline">
                             Volver al Inicio
                         </Link>
                     </div>

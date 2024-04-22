@@ -42,8 +42,7 @@ export const Header = () => {
                                 className={({ isActive }) =>
                                     `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
                                 }
-                                exact
-                            >
+                                exact>
                                 Home
                             </NavLink>
                         </li>
@@ -76,6 +75,9 @@ export const Header = () => {
                         </li>
                     </ul>
                     <div className='d-md-flex'>
+                        {/* <div className='d-flex justify-content-center align-self-center mt-2'>
+                            <p className='text-center me-5'>Bienvenido Administrador</p>
+                        </div> */}
                         {currentUser ? (
                             <ul className="navbar-nav ms-auto">
                                 <li className='nav-item dropdown list-unstyled'>
@@ -84,10 +86,11 @@ export const Header = () => {
                                     </a>
                                     <ul className="dropdown-menu bg-eggs dropdown-menu-end">
                                         <li>
-                                            <Link className="dropdown-item" to="/secuirty">
-                                                Agregar Pregunta Segura
+                                            <Link className="dropdown-item" to="/dispositivo">
+                                                Dispostivo
                                             </Link>
                                         </li>
+
                                         <li>
                                             <Link className="dropdown-item" to="/domicilio">
                                                 Editar Domicilio
@@ -97,7 +100,7 @@ export const Header = () => {
                                             <hr className="dropdown-divider" />
                                         </li>
                                         <li>
-                                            <span className="dropdown-item" onClick={handleLogout}>
+                                            <span className="btn btn-danger w-100 text-light" onClick={handleLogout}>
                                                 Cerrar Sesión
                                             </span>
                                         </li>
@@ -115,37 +118,67 @@ export const Header = () => {
                             </div>
                         )}
                         {currentUser?.permisos === true ? (
-                            <OffcanvasComponent>
-                                <ul className="list-group">
-                                    <li className="list-group-item">
-                                        <NavLink to="/usuarios"
-                                            className={({ isActive }) =>
-                                                `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
-                                            }
-                                            exact>
-                                            Usuarios
-                                        </NavLink>
-                                    </li>
-                                    <li className="list-group-item">
-                                        <NavLink to="/productos"
-                                            className={({ isActive }) =>
-                                                `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
-                                            }
-                                            exact>
-                                            Producto
-                                        </NavLink>
-                                    </li>
-                                    <li className="list-group-item">
-                                        <NavLink to="/Empresa"
-                                            className={({ isActive }) =>
-                                                `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
-                                            }
-                                            exact>
-                                            Editar información de la Empresa
-                                        </NavLink>
-                                    </li>
-                                </ul>
-                            </OffcanvasComponent>
+
+                            <>
+                                <OffcanvasComponent>
+                                    <ul className="list-group">
+                                        <li className="list-group-item">
+                                            <NavLink to="/usuarios"
+                                                className={({ isActive }) =>
+                                                    `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
+                                                }
+                                                exact>
+                                                Usuarios
+                                            </NavLink>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <NavLink to="/productos"
+                                                className={({ isActive }) =>
+                                                    `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
+                                                }
+                                                exact>
+                                                Producto
+                                            </NavLink>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <NavLink to="/Empresa"
+                                                className={({ isActive }) =>
+                                                    `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
+                                                }
+                                                exact>
+                                                Editar información de la Empresa
+                                            </NavLink>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <NavLink to="/preguntas"
+                                                className={({ isActive }) =>
+                                                    `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
+                                                }
+                                                exact>
+                                                Preguntas
+                                            </NavLink>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <NavLink to="/tablepreguntasfrecuentes"
+                                                className={({ isActive }) =>
+                                                    `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
+                                                }
+                                                exact>
+                                                Preguntas Frecuentes
+                                            </NavLink>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <NavLink to="/alldevice"
+                                                className={({ isActive }) =>
+                                                    `nav-link ${isActive ? 'link-primary link-offset-2 link-underline-opacity-100-hover' : 'link-underline-opacity-25'}`
+                                                }
+                                                exact>
+                                                Dispositvos
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </OffcanvasComponent>
+                            </>
                         ) : null}
                     </div>
                 </div>

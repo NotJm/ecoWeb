@@ -41,7 +41,7 @@ export const Login = () => {
             if (response.status === 200) {
                 // Realizar acciones según la respuesta del servidor
                 const result = response.data;
-                const { status, tipo } = result;
+                const { status, tipo, dispositivo, lightState, fanState } = result;
 
                 if (status) {
                     swal.fire({
@@ -55,7 +55,7 @@ export const Login = () => {
                         },
                         didClose: () => {
                             if (!swal.isLoading()) {
-                                login({ username: username, permisos: tipo });
+                                login({ username: username, permisos: tipo, dispositivo: dispositivo, lightState: lightState, fanState: fanState});
                                 navigate("/");
                             }
                         }
@@ -124,7 +124,7 @@ export const Login = () => {
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary mb-3 w-100">
+                        <button type="submit" className="btn btn-danger mb-3 w-100">
                             Iniciar Sesion
                         </button>
 

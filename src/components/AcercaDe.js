@@ -62,3 +62,55 @@ export const AcercaDe = () => {
         </div>
     );
 };
+
+
+export const VisionMisionEmpresa = () => {
+    const [empresa, setEmpresa] = useState([]);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        axios.get("https://ecoserver-zopz.onrender.com/empresa")
+            .then(response => {
+                setEmpresa(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching empresa data:", error);
+                setError("Error fetching empresa data. Please try again later.");
+            });
+    }, []);
+
+    return (
+        <div className='container mt-5'>
+            <div className='row'>
+                <div className='col-lg-4 col-md-12'>
+                    <div className='card mb-4'>
+                        <div className='card-body'>
+                            <h2 className="card-title text-center mb-3">Misión</h2>
+                            <p className="card-text">{empresa[0]?.mision || <Loader/>}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className='col-lg-4 col-md-12'>
+                    <div className='card mb-4'>
+                        <div className='card-body'>
+                            <h2 className="card-title text-center mb-3">Visión</h2>
+                            <p className="card-text">{empresa[0]?.vision || <Loader/>}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className='col-lg-4 col-md-12'>
+                    <div className='card mb-4'>
+                        <div className='card-body'>
+                            <h2 className="card-title text-center mb-3">Eco-Nido</h2>
+                            <p className="card-text">{empresa[0]?.empresa || <Loader/>}</p>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    );
+    
+    
+    
+};

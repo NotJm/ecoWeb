@@ -21,6 +21,19 @@ export const Empresa = () => {
 
     const handleSave = async () => {
         try {
+            // Validación de campos requeridos
+            const requiredFields = ['mision', 'vision', 'empresa', 'historia', 'valores', 'equipo'];
+            const invalidFields = requiredFields.filter(field => !empresa[field]);
+            if (invalidFields.length > 0) {
+                swal.fire({
+                    title: "Campos requeridos",
+                    text: `Los siguientes campos son requeridos: ${invalidFields.join(', ')}`,
+                    icon: "error",
+                });
+                return;
+            }
+
+            // Resto de la lógica de guardado si pasa la validación...
             const response = await axios.post('https://ecoserver-zopz.onrender.com/empresa/edit', empresa);
             console.log(response.data);
             swal.fire({
@@ -33,6 +46,7 @@ export const Empresa = () => {
                 showConfirmButton: false
             });
         } catch (error) {
+            console.error('Error adding device:', error);
             swal.fire({
                 title: "No hay cambios relevantes",
                 text: "Parece que no existen cambios relevantes como para actualizar.",

@@ -15,12 +15,12 @@ export const Methods = () => {
                     </div>
                     <div className='d-flex justify-content-center'>
                         <button
-                            className='btn btn-primary me-2'
+                            className='btn btn-danger me-2'
                             onClick={() => { navigate("/emailform") }}>
                             Por Correo Electronico
                         </button>
                         <button
-                            className='btn btn-primary'
+                            className='btn btn-outline-danger'
                             onClick={() => { navigate("/questionform")}}>
                             Por Pregunta Secreta
                         </button>

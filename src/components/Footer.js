@@ -1,15 +1,30 @@
 import React from 'react';
 import "./css/SocialIcons.css"
+import { useAuth } from './Auth';
+import { Link } from 'react-router-dom';
+
 export const Footer = () => {
+    const { currentUser } = useAuth();
+
+    const handleLinkClick = () => {
+        window.scrollTo(0, 0); // Desplazar hacia arriba al hacer clic en un enlace
+    };
+
     return (
         <footer className="mt-5 bg-eggs text-dark">
             <div className="container py-4">
                 <div className="row">
                     <div className="col-md-4 text-center">
-                        <h5>Preguntas Frecuentes</h5>
-                        <p>¿Cuáles son los beneficios de utilizar EcoNido?</p>
-                        <p>¿Cómo puedo monitorear el progreso de mi incubación?</p>
-                        <p>¿Qué medidas de seguridad toma EcoNido para proteger los huevos en incubación?</p>
+                        <h5>¿Necesitas Ayuda?</h5>
+                        <Link to="/acercaDe" onClick={handleLinkClick}>
+                            <p>¿Quienes somos?</p>
+                        </Link>
+                        <Link to="/contactanos" onClick={handleLinkClick}>
+                            <p>Contactanos</p>
+                        </Link>
+                        <Link to="/preguntas-frecuentes" onClick={handleLinkClick}>
+                            <p>Preguntas frecuentes</p>
+                        </Link>
                     </div>
                     <div className="col-md-4 text-center">
                         <h5>Contacto</h5>
@@ -28,6 +43,28 @@ export const Footer = () => {
                             <SocialIcons />
                         </div>
                     </div>
+                    {currentUser ? (
+                        <div className='col-md-4 text-center'>
+                            <h5>Tu Cuenta</h5>
+                            <Link to="/dispositivo">
+                                <p>Dispositivo</p>
+                            </Link>
+                            <Link to="/domicilio">
+                                <p>Domicilio</p>
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className='col-md-4 text-center'>
+                            <h5>Tu Cuenta</h5>
+                            <Link to="/iniciar-sesion">
+                                <p>Dispositivo</p>
+                            </Link>
+                            <Link to="/iniciar-sesion">
+                                <p>Domicilio</p>
+                            </Link>
+                        </div>
+                    )}
+
                 </div>
                 <hr className="my-4" />
                 <p className="mb-0 text-center">
@@ -55,7 +92,7 @@ const SocialIcons = () => {
                 </svg>{" "}
             </a>
             <a href="#" className="socialContainer containerThree">
-                <svg fill="#fff" className="socialSvg linkdinSvg" width="24" height="24" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                <svg fill="#fff" className="socialSvg linkdinSvg" width="24" height="24" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
                 </g></svg>
             </a>

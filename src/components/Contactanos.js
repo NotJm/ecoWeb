@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Map } from "./GoogleMap";
+import Swal from 'sweetalert2';
 
 export const Contactanos = () => {
     const [email, setEmail] = useState('');
@@ -10,28 +10,38 @@ export const Contactanos = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Acciones con los datos del formulario (puedes enviarlos a un servidor, etc.)
-
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            alert("Por favor ingresa un correo electrónico válido");
+            Swal.fire({
+                icon: 'error',
+                title: 'Correo Electrónico Inválido',
+                text: 'Por favor ingresa un correo electrónico válido.',
+            });
             return;
         }
 
         if (!pregunta) {
-            alert("Por favor selecciona una pregunta");
-            return;
-        }
-        if (!mensaje) {
-            alert("Por favor ingresa un mensaje");
+            Swal.fire({
+                icon: 'error',
+                title: 'Pregunta no seleccionada',
+                text: 'Por favor selecciona un tema.',
+            });
             return;
         }
 
-        // Construccion del esquema que se va enviar
+        if (!mensaje) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mensaje vacío',
+                text: 'Por favor ingresa un mensaje.',
+            });
+            return;
+        }
+
         const data = {
             email: email,
             pregunta: pregunta,
             mensaje: mensaje,
-        }
+        };
 
         try {
             const response = await axios.post("https://ecoserver-zopz.onrender.com/user/contacto", data);
@@ -40,26 +50,34 @@ export const Contactanos = () => {
                 const result = response.data;
                 const { status } = result;
                 if (status) {
-                    alert("Se ha mandado a nuestro correo nosotros te contestamos");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mensaje Enviado',
+                        text: 'Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.',
+                    });
                 } else {
-                    alert("Solo se permite una pregunta por correo electronico");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al Enviar Mensaje',
+                        text: 'Solo se permite una pregunta por correo electrónico.',
+                    });
                 }
             } else {
                 console.error('Error en la solicitud:', response.statusText);
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.',
+            });
         }
 
-
-
-        // Muestra los datos en la consola para propósitos de demostración
-
-        // Reinicia los campos del formulario después de enviar los datos
         setEmail('');
         setPregunta('');
         setMensaje('');
-    };
+    };;
 
     return (
         <div className="container mt-5 p-3 rounded shadow" style={{ backgroundColor: "#ccc" }}>
@@ -117,7 +135,7 @@ export const Contactanos = () => {
                     </form>
                 </div>
                 <div className="col-md-6 d-flex justify-content-center align-items-center flex-column">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7442.348343939589!2d-98.41836070000001!3d21.14546580000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1710299161973!5m2!1ses-419!2smx"  style={{borderWidth: 0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" className='w-100 h-100'/>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7442.348343939589!2d-98.41836070000001!3d21.14546580000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1710299161973!5m2!1ses-419!2smx" style={{ borderWidth: 0 }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" className='w-100 h-100' />
                 </div>
             </div>
         </div>
